@@ -10,6 +10,7 @@
         <directory name="src"/>
         <ignoreFiles>
             <directory name="vendor"/>
+            <directory name="src/Repository"/>
         </ignoreFiles>
     </projectFiles>
 <plugins><pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/><pluginClass class="Psalm\PhpUnitPlugin\Plugin"/></plugins></psalm>

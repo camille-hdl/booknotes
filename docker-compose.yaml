@@ -5,4 +5,8 @@ services:
     image: mariadb:10.4
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: main
+      MYSQL_DATABASE: main
+    ports: [3306]
+    labels:
+      com.symfony.server.service-prefix: 'DATABASE'

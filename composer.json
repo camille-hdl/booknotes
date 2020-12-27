@@ -94,6 +94,7 @@
         "phpcs": "phpcs src tests --standard=psr12 -sp --colors",
         "phpcbf": "phpcbf src tests --standard=psr12",
         "psalm": "psalm",
+        "psalm-fix": "psalm --alter --issues=all",
         "phpstan": [
             "phpstan analyse src -c phpstan.neon --level max --no-progress --memory-limit=256M",
             "phpstan analyse tests -c phpstan.neon --level 4 --no-progress --memory-limit=256M"

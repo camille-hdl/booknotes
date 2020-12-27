@@ -28,7 +28,7 @@ web:
             passthru: "/index.php"
 
 relationships:
-    database: "db:mariadb"
+    database: "db:mysql"
 
 mounts:
     "/var": { source: local, source_path: var }

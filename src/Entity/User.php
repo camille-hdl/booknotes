@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -14,46 +15,89 @@ class User
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UlidGenerator::class)
      */
-    private $id;
+    protected ?string $id = null;
 
     /**
      * @ORM\Column (type="string", length=255)
      *
      * @var null|string
      */
-    private $username;
+    protected $username;
 
     /**
      * @ORM\Column (type="string", length=255, nullable=true)
      *
      * @var null|string
      */
-    private $password;
+    protected $password;
 
     /**
      * @ORM\OneToMany(targetEntity=Book::class, mappedBy="user", orphanRemoval=true)
      */
-    private $books;
+    protected Collection $books;
 
     /**
      * @ORM\Column (type="datetime")
-     *
-     * @var \DateTimeInterface|null
      */
-    private $createdOn;
+    protected \DateTimeInterface $createdOn;
 
     /**
      * @ORM\Column (type="datetime")
-     *
-     * @var \DateTimeInterface|null
      */
-    private $updatedOn;
+    protected \DateTimeInterface $updatedOn;
 
     /**
      * @ORM\OneToMany(targetEntity=Note::class, mappedBy="user", orphanRemoval=true)
      */
-    private $notes;
+    protected Collection $notes;
+
+    public function __construct(string $username)
+    {
+        $this->createdOn = new \DateTimeImmutable();
+        $this->updatedOn = new \DateTimeImmutable();
+        $this->notes = new ArrayCollection();
+        $this->books = new ArrayCollection();
+        $this->username = $username;
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection<array-key, Book>
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    /**
+     * @return Collection<array-key, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+        }
+        return $this;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+        }
+        return $this;
+    }
 }

@@ -6,6 +6,7 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
@@ -14,63 +15,79 @@ class Book
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UlidGenerator::class)
      */
-    private $id;
+    protected ?string $id;
 
     /**
      * @ORM\Column (type="string", length=255)
-     *
-     * @var null|string
      */
-    private $title;
+    protected ?string $title;
 
     /**
      * @ORM\Column (type="string", length=255, nullable=true)
-     *
-     * @var null|string
      */
-    private $authorName;
+    protected ?string $authorName;
 
     /**
      * @ORM\Column (type="datetime")
-     *
-     * @var \DateTimeInterface|null
      */
-    private $createdOn;
+    protected \DateTimeInterface $createdOn;
 
     /**
      * @ORM\Column (type="datetime")
-     *
-     * @var \DateTimeInterface|null
      */
-    private $updatedOn;
+    protected \DateTimeInterface $updatedOn;
 
     /**
      * @ORM\ManyToOne (targetEntity=User::class, inversedBy="books")
      *
      * @ORM\JoinColumn (nullable=false)
-     *
-     * @var User|null
      */
-    private $user;
+    protected User $user;
 
     /**
      * @ORM\OneToMany(targetEntity=Note::class, mappedBy="book")
-     * @var Note[]
      */
-    private $notes;
+    protected Collection $notes;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+        $user->addBook($this);
+        $this->notes = new ArrayCollection();
+        $this->createdOn = new \DateTimeImmutable();
+        $this->updatedOn = new \DateTimeImmutable();
+        $this->title = "";
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
 
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    /**
+     * @return Collection<array-key, Note>
+     */
+    public function getNotes(): Collection
     {
-        $this->user = $user;
+        return $this->notes;
+    }
 
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setBook($this);
+        }
         return $this;
     }
 }

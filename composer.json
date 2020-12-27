@@ -36,6 +36,7 @@
         "symfony/string": "5.2.*",
         "symfony/translation": "5.2.*",
         "symfony/twig-bundle": "^5.2",
+        "symfony/uid": "5.2.*",
         "symfony/validator": "5.2.*",
         "symfony/web-link": "5.2.*",
         "symfony/yaml": "5.2.*",
@@ -43,6 +44,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^6.5",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "psalm/plugin-phpunit": "^0.15.0",
         "psalm/plugin-symfony": "^2.1",

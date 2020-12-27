@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"php.suggest.basic": false
+		"php.suggest.basic": false,
+		"better-phpunit.phpunitBinary": "symfony run bin/phpunit",
 	}
 }

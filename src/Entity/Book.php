@@ -24,7 +24,7 @@ class Book
     /**
      * @ORM\Column (type="string", length=255)
      */
-    protected ?string $title;
+    protected ?string $title = "";
 
     /**
      * @ORM\Column (type="string", length=255, nullable=true)
@@ -60,13 +60,33 @@ class Book
         $this->notes = new ArrayCollection();
         $this->createdOn = new \DateTimeImmutable();
         $this->updatedOn = new \DateTimeImmutable();
-        $this->title = "";
+    }
+
+    public function getId(): string
+    {
+        return $this->id ?? "";
     }
 
     public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
+    }
+
+    public function getAuthorName(): ?string
+    {
+        return $this->authorName;
+    }
+
+    public function setAuthorName(?string $authorName): self
+    {
+        $this->authorName = $authorName;
+        return $this;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title ?? "";
     }
 
     public function getUser(): ?User
@@ -89,5 +109,14 @@ class Book
             $note->setBook($this);
         }
         return $this;
+    }
+
+    public function getCreatedOn(): \DateTimeInterface
+    {
+        return $this->createdOn;
+    }
+    public function getUpdatedOn(): \DateTimeInterface
+    {
+        return $this->updatedOn;
     }
 }

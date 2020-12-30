@@ -91,7 +91,7 @@ class RegistrationController extends AbstractController
             $this->addFlash('success', 'A new validation email has been sent to your address.');
             $this->sendValidationEmail($user);
         }
-        return $this->redirectToRoute('book');
+        return $this->redirectToRoute('book_index');
     }
 
     /**
@@ -138,6 +138,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('book');
+        return $this->redirectToRoute('book_index');
     }
 }

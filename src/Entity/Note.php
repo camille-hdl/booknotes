@@ -48,7 +48,7 @@ class Note
      */
     protected User $user;
 
-    public function __construct(User $user, ?Book $book)
+    public function __construct(User $user, ?Book $book = null)
     {
         $this->user = $user;
         $this->book = $book;
@@ -57,9 +57,25 @@ class Note
         $this->updatedOn = new \DateTimeImmutable();
     }
 
+    public function getId(): string
+    {
+        return $this->id ?? '';
+    }
+
     public function getBook(): ?Book
     {
         return $this->book;
+    }
+
+    public function getContent(): string
+    {
+        return $this->content ?? "";
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+        return $this;
     }
 
     public function setBook(?Book $book): self
@@ -68,6 +84,11 @@ class Note
             throw new \DomainException(
                 "Note attached to another user's book"
             );
+        }
+        if ($this->book !== $book) {
+            $this->book = $book;
+        }
+        if ($book) {
             $book->addNote($this);
         }
 
@@ -77,5 +98,13 @@ class Note
     public function getUser(): User
     {
         return $this->user;
+    }
+    public function getCreatedOn(): \DateTimeInterface
+    {
+        return $this->createdOn;
+    }
+    public function getUpdatedOn(): \DateTimeInterface
+    {
+        return $this->updatedOn;
     }
 }

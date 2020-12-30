@@ -30,6 +30,14 @@
         </tbody>
     </table>
 
+    {% if book.notes %}
+    <ul>
+        {% for note in book.notes %}
+            <li><a href="{{ path("note_show", { id: note.id }) }}">{{ note.content }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <a href="{{ path('book_index') }}">back to list</a>
 
     <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>

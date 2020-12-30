@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Note{% endblock %}
+
+{% block body %}
+    <h1>Create new Note</h1>
+
+    {{ include('note/_form.html.twig') }}
+    <a href="{{ path('note_index') }}">back to list</a><br />
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+    <input type="file" id="imageUpload" accept="image/*">Read from an image</input>
+    <div id="tesseract-log"></div>
+    <script>
+        function log(message) {
+            document.getElementById("tesseract-log").innerHTML = message;
+        }
+        const recognize = async ({ target: { files }  }) => {
+            const { data: { text } } = await Tesseract.recognize(files[0], 'eng', {
+                logger: m => {
+                    log("Initializing...");
+                    if (m.status === "recognizing text") {
+                        log(`Recognizing text: ${(m.progress * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%`);
+                    }
+                    if (m.status === "recognizing text" && m.progress === 1) {
+                        log("Done. You can review and trim the text in the input box above.");
+                    }
+                    console.log(m)
+                },
+            });
+            console.log(text);
+            document.getElementById("note_content").value = text;
+        }
+        const elm = document.getElementById('imageUpload');
+        elm.addEventListener('change', recognize);
+    </script>
+{% endblock %}

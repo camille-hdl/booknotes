@@ -10,7 +10,7 @@ class BookTest extends TestCase
 {
     public function testConstruct()
     {
-        $user = new User("test");
+        $user = new User();
         $this->assertCount(0, $user->getBooks());
         $book = new Book($user);
         $this->assertCount(0, $book->getNotes());

@@ -27,8 +27,12 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GuardAuthenticatorHandler $guardHandler,
+        UserAuthenticator $authenticator
+    ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -50,12 +54,18 @@ class RegistrationController extends AbstractController
             $this->sendValidationEmail($user);
             // do anything else you need here, like send an email
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
+            $response = $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
             );
+            if (!$response) {
+                throw new \RuntimeException(
+                    "Something bad happened"
+                );
+            }
+            return $response;
         }
 
         return $this->render('registration/register.html.twig', [
@@ -64,43 +74,61 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/request-validation', name: 'app_request_validation')]
-    public function requestValidation(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
-    {
+    public function requestValidation(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GuardAuthenticatorHandler $guardHandler,
+        UserAuthenticator $authenticator
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        if ($this->getUser()->isVerified()) {
+        $user = $this->getUser();
+        if (!$user || !$user instanceof User) {
+            throw new \LogicException("No user");
+        }
+        if ($user->isVerified()) {
             $this->addFlash('success', 'Your email address is already verified.');
         } else {
             $this->addFlash('success', 'A new validation email has been sent to your address.');
-            $this->sendValidationEmail($this->getUser());
+            $this->sendValidationEmail($user);
         }
         return $this->redirectToRoute('book');
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      * @return void
      */
-    protected function sendValidationEmail(UserInterface $user)
+    protected function sendValidationEmail(User $user)
     {
-        $this->emailVerifier->sendEmailConfirmation(
-            'app_verify_email',
-            $user,
-            (new TemplatedEmail())
-                ->from(new Address('test@local.com', 'Booknotes'))
-                ->to($user->getEmail())
-                ->subject('Please Confirm your Email')
-                ->htmlTemplate('registration/confirmation_email.html.twig')
-        );
+        $email = $user->getEmail();
+        if (EmailVerifier::isValidEmail($email)) {
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
+                (new TemplatedEmail())
+                    ->from(new Address('test@local.com', 'Booknotes'))
+                    ->to($email)
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+        } else {
+            throw new \InvalidArgumentException(
+                "User has no email"
+            );
+        }
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        $user = $this->getUser();
+        if (\is_null($user) || !$user instanceof User) {
+            return $this->redirectToRoute('login');
+        }
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
 

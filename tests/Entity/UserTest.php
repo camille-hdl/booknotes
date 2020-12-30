@@ -24,7 +24,9 @@ class UserTest extends KernelTestCase
     }
     public function testConstruct()
     {
-        $user = new User("test");
+        $user = new User();
+        $user->setEmail("abc@test.com");
+        $user->setPassword("abc");
         $this->assertNull($user->getId());
         $this->em->persist($user);
         dump($user->getId());

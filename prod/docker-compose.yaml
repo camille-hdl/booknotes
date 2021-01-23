@@ -1,0 +1,53 @@
+version: "3.1"
+services:
+
+    db:
+      image: mariadb:10.4
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: main
+        MYSQL_DATABASE: main
+      ports: [3306]
+      labels:
+        com.symfony.server.service-prefix: 'DATABASE'
+      volumes:
+        - .:/application
+        - mysqldata1:/var/lib/mysql
+
+    webserver:
+      image: linuxserver/letsencrypt
+      container_name: docker-symfony4-webserver
+      working_dir: /application
+      restart: unless-stoppped
+      volumes:
+          - .:/application
+          - ./nginx/nginx-https.conf:/config/nginx/site-confs/default
+      ports:
+       - "80:80"
+       - "443:443"
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - EMAIL=camilleh@hey.com
+        - URL=bookgraph.link
+        - SUBDOMAINS=www
+        - TZ=Europe/Paris
+        - VALIDATION=http
+        - STAGING=true # this should be uncommented when testing for initial success, to avoid some rate limiting
+      depends_on:
+        - php-fpm
+
+    php-fpm:
+      image: chodoul1egal2/php80-mysql
+      container_name: docker-symfony-php-fpm
+      restart: unless-stoppped
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.0/fpm/conf.d/99-overrides.ini
+      depends_on:
+        - db
+
+volumes:
+  mysqldata1:
+    driver: local

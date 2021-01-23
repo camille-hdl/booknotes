@@ -11,14 +11,14 @@ services:
       labels:
         com.symfony.server.service-prefix: 'DATABASE'
       volumes:
-        - .:/application
+        - ..:/application
         - mysqldata1:/var/lib/mysql
 
     webserver:
       image: linuxserver/letsencrypt
       container_name: docker-symfony4-webserver
       working_dir: /application
-      restart: unless-stoppped
+      restart: unless-stopped
       volumes:
           - .:/application
           - ./nginx/nginx-https.conf:/config/nginx/site-confs/default
@@ -40,10 +40,10 @@ services:
     php-fpm:
       image: chodoul1egal2/php80-mysql
       container_name: docker-symfony-php-fpm
-      restart: unless-stoppped
+      restart: unless-stopped
       working_dir: /application
       volumes:
-        - .:/application
+        - ..:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.0/fpm/conf.d/99-overrides.ini
       depends_on:
         - db

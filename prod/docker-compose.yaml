@@ -20,7 +20,7 @@ services:
       working_dir: /application
       restart: unless-stopped
       volumes:
-          - .:/application
+          - ..:/application
           - ./nginx/nginx-https.conf:/config/nginx/site-confs/default
       ports:
        - "80:80"

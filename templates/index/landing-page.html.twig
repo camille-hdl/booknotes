@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% import "components/landing-button.html.twig" as buttons %}
+
+{% block title %}BookGraph: linked reading notes{% endblock %}
+
+{% block body %}
+<div class="container w-full xl:w-3/6">
+    <article class="container mx-auto flex flex-wrap">
+        <h1 class="font-sans text-5xl text-center w-full">BookGraph</h1>
+        <ul class="font-serif text-4xl list-disc mt-8 list-inside mx-auto">
+            <li>Write or snap notes,</li>
+            <li>attach them to books,</li>
+            <li>link them together.</li>
+        </ul>
+        <section class="text-center mt-8 w-full">
+            {{ buttons.landingLink(path("app_register"), "Register (free)") }}
+            {{ buttons.landingLink(path("app_login"), "Login") }}
+        </section>
+        <section class="w-full text-center mt-8">
+            <hr />
+            <h2 class="font-sans text-xl">How it works</h2>
+            {% include "components/drawing.html.twig" %}
+        </section>
+    </article>
+</div>
+<section class="fixed bottom-0 w-full">
+    <div class="container">
+    <ul class="flex justify-evenly xl:justify-center">
+        <li class="px-3">Copyright Camille Hodoul {{ 'now'|date('Y') }}</li>
+        <li class="px-3">{{ buttons.externalLink("https://camillehdl.dev", "My website") }}</li>
+        <li class="px-3">{{ buttons.externalLink("https://github.com/camille-hdl/booknotes", "Github") }}</li>
+    </ul>
+    </div>
+</section>
+{% endblock %}

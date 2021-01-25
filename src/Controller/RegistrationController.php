@@ -108,7 +108,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('register@bookgraph.link', 'BookGraph'))
                     ->to($email)
-                    ->subject('Please Confirm your Email')
+                    ->subject('Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
         } else {

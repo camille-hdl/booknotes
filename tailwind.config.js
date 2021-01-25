@@ -9,6 +9,10 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+    },
     extend: {
       colors: {
         linen: {
@@ -22,7 +26,9 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
   fontFamily: {
     sans: ['ui-sans-serif', 'Open Sans', 'Graphik', 'sans-serif'],
     serif: ['ui-serif', 'Merriweather', 'Georgia', 'serif'],

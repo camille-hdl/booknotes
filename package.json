@@ -1,0 +1,32 @@
+{
+  "name": "bookgraph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "public/index.php",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.3",
+    "postcss": "^8.2.4",
+    "tailwindcss": "^2.0.2"
+  },
+  "devDependencies": {
+    "postcss-cli": "^8.3.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css": "postcss src/styles.css -o public/compiled.css",
+    "cssprod": "env NODE_ENV='production' postcss src/styles.css -o public/compiled.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camille-hdl/booknotes.git"
+  },
+  "author": "camilleh@hey.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/camille-hdl/booknotes/issues"
+  },
+  "homepage": "https://github.com/camille-hdl/booknotes#readme"
+}

@@ -21,3 +21,4 @@
 ###< squizlabs/php_codesniffer ###
 
 /build/
+node_modules/

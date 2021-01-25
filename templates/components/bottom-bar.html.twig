@@ -1,0 +1,10 @@
+{% import "components/landing-button.html.twig" as buttons %}
+<section class="fixed bottom-0 w-full">
+    <div class="container">
+    <ul class="flex justify-evenly xl:justify-center">
+        <li class="px-3">Copyright Camille Hodoul {{ 'now'|date('Y') }}</li>
+        <li class="px-3">{{ buttons.externalLink("https://camillehdl.dev", "My website") }}</li>
+        <li class="px-3">{{ buttons.externalLink("https://github.com/camille-hdl/booknotes", "Github") }}</li>
+    </ul>
+    </div>
+</section>

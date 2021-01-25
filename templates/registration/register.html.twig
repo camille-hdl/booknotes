@@ -1,21 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register on BookGraph{% endblock %}
 
 {% block body %}
+<div class="container w-full xl:w-3/6">
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+    <a href="{{ path("landing_page")}}">↤ BookGraph</a>
+    <article>
+        <h1>Register</h1>
 
-    <h1>Register</h1>
+        <h2 class="mb-8">Privacy policy and terms of service</h2>
+        <p>
+            We ask for your email address only so that:
+            <ul class="list-disc">
+                <li>we can log you in,</li>
+                <li>we can reset your password should you need it.</li>
+            </ul><br />
+            We won't share your data with any third party.<br />
+            All data is stored and processed in France, on <a href="https://www.ovh.com/fr/support/mentions-legales/" target="_blank">OVHCloud</a>.<br />
+        </p>
+        <p class="mt-4">
+            The content you add to your account (such as notes and tags) is stored in plain text so that it can easily be indexed and searched,
+            but is visible only to you.<br />
+            You should not store any personal or confidential information in your notes.  
+        </p>
+        <p class="mt-4">
+            We recommend you use a different password on every website, this one included.
+            <a href="https://krebsonsecurity.com/password-dos-and-donts/" target="_blank">Read this article from Brian Krebs</a> for a good overview of password hygiene.
+        </p>
+        <p class="mt-4">
+            We will send you a link to verify your email address. Please check your spam folder.
+        </p>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        <section class="mt-8 ">
+            {{ form_start(registrationForm) }}
+                <div class="mb-8" role="presentation">
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password'
+                    }) }}
+                    {{ form_row(registrationForm.agreeTerms) }}
+                </div>
+                <button
+                    type="submit"
+                    class="py-2 px-6 text-4xl border rounded-full border-solid text-blue-700 border-blue-700 font-semibold hover:shadow-md hover:bg-linen-dark focus:bg-linen-dark focus:ring-2 focus:ring-blue focus:ring-opacity-75"
+                >✏️ Register</button>
+            {{ form_end(registrationForm) }}
+        </section>
+        <section class="mt-8">
+            Already have an account? <a href="{{ path("app_login")}}">Log in.</a>
+        </section>
+    </article>
+</div>
+{% include "components/bottom-bar.html.twig" %}
 {% endblock %}

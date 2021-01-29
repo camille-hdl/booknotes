@@ -2,11 +2,14 @@
 {% import "components/landing-button.html.twig" as buttons %}
 
 {% block title %}BookGraph: linked reading notes{% endblock %}
-
+{% block metatags %}
+<meta name="description" content="Write or snap notes, attach them to books, link them together." />
+{% endblock %}
 {% block body %}
 <div class="container w-full xl:w-3/6">
     <article class="container mx-auto flex flex-wrap">
         <h1 class="font-sans text-5xl text-center w-full">BookGraph</h1>
+        <p class="text-xs text-center w-full">(alpha)</p>
         <ul class="font-serif text-4xl list-disc mt-8 list-inside mx-auto">
             <li>Write or snap notes,</li>
             <li>attach them to books,</li>

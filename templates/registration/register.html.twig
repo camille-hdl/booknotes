@@ -9,12 +9,12 @@
     {% endfor %}
     <a href="{{ path("landing_page")}}">↤ BookGraph</a>
     <article>
-        <h1>Register</h1>
+        <h1 class="mb-3 font-weight-normal">Register</h1>
 
         <h2 class="mb-8">Privacy policy and terms of service</h2>
         <p>
             We ask for your email address only so that:
-            <ul class="list-disc">
+            <ul class="list-disc list-inside">
                 <li>we can log you in,</li>
                 <li>we can reset your password should you need it.</li>
             </ul><br />
@@ -24,7 +24,7 @@
         <p class="mt-4">
             The content you add to your account (such as notes and tags) is stored in plain text so that it can easily be indexed and searched,
             but is visible only to you.<br />
-            You should not store any personal or confidential information in your notes.  
+            You should not store any personal or confidential information, nor any illegal content in your notes (please).  
         </p>
         <p class="mt-4">
             We recommend you use a different password on every website, this one included.
@@ -36,17 +36,17 @@
 
         <section class="mt-8 ">
             {{ form_start(registrationForm) }}
-                <div class="mb-8" role="presentation">
                     {{ form_row(registrationForm.email) }}
                     {{ form_row(registrationForm.plainPassword, {
                         label: 'Password'
                     }) }}
                     {{ form_row(registrationForm.agreeTerms) }}
+                <div class="text-center">
+                    <button
+                        type="submit"
+                        class="py-2 px-6 text-4xl border rounded-full border-solid text-blue-700 border-blue-700 font-semibold hover:shadow-md hover:bg-linen-dark focus:bg-linen-dark focus:ring-2 focus:ring-blue focus:ring-opacity-75"
+                    >Register</button>
                 </div>
-                <button
-                    type="submit"
-                    class="py-2 px-6 text-4xl border rounded-full border-solid text-blue-700 border-blue-700 font-semibold hover:shadow-md hover:bg-linen-dark focus:bg-linen-dark focus:ring-2 focus:ring-blue focus:ring-opacity-75"
-                >✏️ Register</button>
             {{ form_end(registrationForm) }}
         </section>
         <section class="mt-8">
